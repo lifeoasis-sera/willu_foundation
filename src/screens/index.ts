@@ -18,6 +18,7 @@ export {default as EditSelfie} from './EditSelfie';
 
 export {default as PromptSelected} from './PromptSelected';
 export {default as PromptList} from './PromptList';
+export {default as PromptAnswer} from './PromptAnswer';
 
 export {default as SlipDefaultProfile} from './SlipDefaultProfile';
 export {default as SlipDetailProfile} from './SlipDetailProfile';

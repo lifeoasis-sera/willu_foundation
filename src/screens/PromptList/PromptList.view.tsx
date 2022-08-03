@@ -11,12 +11,14 @@ interface PromptListViewProps {
   };
   handle: {
     onSelectSection: (key: string) => void;
-    onSelectQuestion: (key: string) => void;
+    onSelectQuestion: (sectionKey: string, questionKey: string) => void;
   };
 }
 const PromptListView = (props: PromptListViewProps) => {
   const {sections, questions} = props.data;
   const {onSelectSection, onSelectQuestion} = props.handle;
+
+  const selectSection = sections.filter(section => section.select)[0];
 
   return (
     <View style={{flex: 1}}>
@@ -66,7 +68,10 @@ const PromptListView = (props: PromptListViewProps) => {
             return (
               <Pressable
                 key={question.key}
-                onPress={() => onSelectQuestion(question.key)}
+                pointerEvents={'box-only'}
+                onPress={() =>
+                  onSelectQuestion(selectSection.key, question.key)
+                }
                 style={{
                   paddingVertical: 18,
                   borderBottomWidth: 1,

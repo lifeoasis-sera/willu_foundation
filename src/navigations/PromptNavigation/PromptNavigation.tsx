@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {PromptNavigationParams} from '../types';
-import {PromptSelected, PromptList, SlipDetailProfile} from '../../screens';
+import {PromptSelected, PromptList, PromptAnswer} from '../../screens';
 
 const Stack = createNativeStackNavigator<PromptNavigationParams>();
 
@@ -13,17 +13,8 @@ const PromptNavigation = () => {
         component={PromptSelected}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name={'List'}
-        component={PromptList}
-        options={{
-          headerShadowVisible: false,
-          title: '질문',
-          headerBackTitle: '',
-          headerBackImageSource: require('../../assets/image/icon/ic_xmark_circle_24.png'),
-        }}
-      />
-      <Stack.Screen name={'Answer'} component={SlipDetailProfile} />
+      <Stack.Screen name={'List'} component={PromptList} />
+      <Stack.Screen name={'Answer'} component={PromptAnswer} />
     </Stack.Navigator>
   );
 };

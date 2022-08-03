@@ -43,5 +43,5 @@ export type SignUpNavigationParams = CommonNavigationParams &
 export type PromptNavigationParams = {
   Selected: undefined;
   List: undefined;
-  Answer: {question: string};
+  Answer: {question: string; placeholder: string};
 };

@@ -34,6 +34,7 @@ const PromptListContainer = ({navigation}: Props) => {
   }
 
   function selectSectionQuestions(sectionKey: string) {
+    // TODO API : 질문 목록 가져오기
     return sectionQuestions.filter(section => section.key === sectionKey)[0]
       .questions;
   }

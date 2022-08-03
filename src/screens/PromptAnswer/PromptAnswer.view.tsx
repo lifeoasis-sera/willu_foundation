@@ -33,7 +33,7 @@ const PromptAnswerView = (props: PromptAnswerViewProps) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <View style={{marginHorizontal: 20}}>
         <View
           style={{
@@ -73,6 +73,16 @@ const PromptAnswerView = (props: PromptAnswerViewProps) => {
           }}
         />
       </View>
+      <View
+        style={{
+          position: 'absolute',
+          left: 100,
+          bottom: 0,
+          height: 100,
+          width: 100,
+          backgroundColor: ColorBundle.primary,
+        }}
+      />
     </SafeAreaView>
   );
 };

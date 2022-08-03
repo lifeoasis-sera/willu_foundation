@@ -80,6 +80,20 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
           </Typography>
         </Pressable>
       }
+      submitButton={
+        <IconButton
+          onPress={onSubmit}
+          disable={!code || code.length !== 6}
+          loading={loading}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={{width: 29, height: 24}}
+          containerStyle={{
+            width: 56,
+            height: 56,
+            borderRadius: 60,
+          }}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       <CodeField
         ref={inputRef}
@@ -111,20 +125,6 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
         }}>
         {textJson.SignUp.AuthCode.NotCode}
       </FlatButton>
-      <IconButton
-        onPress={onSubmit}
-        disable={!code || code.length !== 6}
-        loading={loading}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
-      />
     </SignUpTemplate>
   );
 };

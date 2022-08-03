@@ -1,21 +1,24 @@
 import React, {ReactNode} from 'react';
 import {
+  ColorValue,
   ImageBackground,
   ImageSourcePropType,
   SafeAreaView,
   View,
   ViewStyle,
 } from 'react-native';
-import {Typography, ProgressBar} from '../../../components';
+import {ProgressBar, Typography} from '../../../components';
 import {ColorBundle} from '../../../styles/color-bundle';
 
 interface SignUpTemplateProps {
   title: string;
   subtitle?: string;
+  guid?: {text: string; color?: ColorBundle | ColorValue};
   icon?: ImageSourcePropType;
   subSubTitle?: ReactNode;
   style?: ViewStyle;
   progressBar?: {num: number; total: number};
+  submitButton?: ReactNode;
   children?: ReactNode;
   shownHeaderTitle?: boolean;
 }
@@ -24,9 +27,11 @@ const SignUpTemplate = (props: SignUpTemplateProps) => {
   const {
     title,
     subtitle,
+    guid,
     subSubTitle,
     icon,
     children,
+    submitButton,
     style: childrenStyle,
     progressBar,
     shownHeaderTitle = false,
@@ -89,6 +94,18 @@ const SignUpTemplate = (props: SignUpTemplateProps) => {
           childrenStyle,
         ]}>
         {children}
+        {guid && (
+          <Typography
+            size={16}
+            color={guid?.color || ColorBundle.textInfo}
+            center={true}
+            style={{marginTop: 20}}>
+            {guid.text}
+          </Typography>
+        )}
+      </View>
+      <View style={{marginBottom: 20, marginRight: 24, alignSelf: 'flex-end'}}>
+        {submitButton}
       </View>
     </SafeAreaView>
   );

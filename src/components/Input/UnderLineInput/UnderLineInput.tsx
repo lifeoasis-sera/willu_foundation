@@ -16,11 +16,13 @@ interface UnderLineInputProps {
   onChangeText?: (text: string) => void;
   suffix?: ReactNode;
   lineStyle?: {
+    color?: ColorBundle | ColorValue;
     width?: number;
     padding?: number;
   };
   keyboardType?: KeyboardType;
   maxLength?: number;
+  onSubmit?: () => void;
 }
 
 const UnderLineInput = (props: UnderLineInputProps) => {
@@ -34,6 +36,7 @@ const UnderLineInput = (props: UnderLineInputProps) => {
     lineStyle,
     keyboardType,
     maxLength,
+    onSubmit,
   } = props;
 
   return (
@@ -41,9 +44,10 @@ const UnderLineInput = (props: UnderLineInputProps) => {
       style={{
         flexDirection: 'row',
         borderBottomWidth: lineStyle?.width ? lineStyle.width : 1,
-        borderBottomColor: value
-          ? ColorBundle.textDefault
-          : ColorBundle.divider,
+        borderBottomColor:
+          lineStyle?.color || value
+            ? ColorBundle.textDefault
+            : ColorBundle.divider,
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingBottom: lineStyle?.padding
@@ -60,6 +64,7 @@ const UnderLineInput = (props: UnderLineInputProps) => {
         onChangeText={onChangeText}
         value={value}
         maxLength={maxLength}
+        onSubmitEditing={onSubmit}
         style={{flex: 1, fontSize: size, color}}
       />
       {suffix}

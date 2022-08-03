@@ -25,14 +25,14 @@ const PromptListView = (props: PromptListViewProps) => {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        style={{flexGrow: 0}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingBottom: 12,
-            borderBottomWidth: 1,
-            borderBottomColor: ColorBundle.divider,
-          }}>
+        style={{
+          flexShrink: 0,
+          flexGrow: 0,
+          paddingBottom: 12,
+          borderBottomWidth: 1,
+          borderBottomColor: ColorBundle.divider,
+        }}>
+        <View style={{flexDirection: 'row'}}>
           {sections.map((section, index) => {
             const hasSpace = section.section.indexOf(' ') !== -1;
             const sectionTitle = hasSpace

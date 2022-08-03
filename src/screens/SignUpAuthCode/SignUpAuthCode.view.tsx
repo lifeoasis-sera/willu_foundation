@@ -21,19 +21,18 @@ interface SignUpAuthCodeViewProps {
     email: string;
     timer: string;
     code: string | undefined;
-    warning: boolean;
     loading: boolean;
   };
   handle: {
     onChangeCode: (text: string) => void;
     onReSendCode: () => void;
-    onSubmit: () => void;
     onChannelTalk: () => void;
+    onSubmit?: () => void;
   };
 }
 
 const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
-  const {email, code, timer, warning, loading} = props.data;
+  const {email, code, timer, loading} = props.data;
   const {onChangeCode, onChannelTalk, onReSendCode, onSubmit} = props.handle;
 
   const textJson = getTextJson();
@@ -50,11 +49,7 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
         onLayout={getCellOnLayoutHandler(index)}
         key={index}
         style={[styles.cellRoot, (!!symbol || isFocused) && styles.focusCell]}>
-        <Text
-          style={[
-            styles.cellText,
-            {color: warning ? ColorBundle.activate : ColorBundle.textDefault},
-          ]}>
+        <Text style={[styles.cellText, {color: ColorBundle.textDefault}]}>
           {symbol || (isFocused ? <Cursor /> : null)}
         </Text>
       </View>
@@ -83,10 +78,10 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
       submitButton={
         <IconButton
           onPress={onSubmit}
-          disable={!code || code.length !== 6}
+          disable={!onSubmit}
           loading={loading}
           icon={require('../../assets/image/icon/ic_arrow_right.png')}
-          size={{width: 29, height: 24}}
+          size={{width: 24, height: 24}}
           containerStyle={{
             width: 56,
             height: 56,

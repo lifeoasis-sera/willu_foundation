@@ -3,11 +3,12 @@ import SignUpAuthEmailView from './SignUpAuthEmail.view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SignUpNavigationParams} from '../../navigations/types';
 import {getTextJson} from '../../utils';
+import {Alert} from 'react-native';
 
 enum EMAIL_TYPE {
-  'SUCCESS',
-  'NOT_VALID',
-  'NOT_STANDARD',
+  SUCCESS,
+  NOT_VALID,
+  NOT_STANDARD,
 }
 type Props = NativeStackScreenProps<SignUpNavigationParams, 'AuthEmail'>;
 
@@ -43,7 +44,12 @@ const SignUpAuthEmailContainer = ({navigation}: Props) => {
       if (emailType === EMAIL_TYPE.SUCCESS) {
         setLoading(true);
         // TODO API : 인증 번호 발송
-        navigation.navigate('AuthCode', {email: email});
+        const isExpired = false;
+        if (isExpired) {
+          Alert.alert(textJson.SignUp.AuthCode.AlertExpired);
+        } else {
+          navigation.navigate('AuthCode', {email: email});
+        }
         setLoading(false);
       }
 

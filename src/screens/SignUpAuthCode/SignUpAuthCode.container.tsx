@@ -2,25 +2,21 @@ import React, {useEffect, useState} from 'react';
 import SignUpAuthCodeView from './SignUpAuthCode.view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SignUpNavigationParams} from '../../navigations/types';
+import {Alert} from 'react-native';
+import {getTextJson} from '../../utils';
 
 type Props = NativeStackScreenProps<SignUpNavigationParams, 'AuthCode'>;
-const LIMITED_TIME = 300;
+const LIMITED_TIME = 10; //300;
 
 const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
   const [code, setCode] = useState('');
   const [timer, setTimer] = useState(LIMITED_TIME);
-  const [warning, setWarning] = useState(false);
   const [loading, setLoading] = useState(false);
+  const textJson = getTextJson();
 
   useEffect(() => {
     startTimer();
   }, []);
-
-  useEffect(() => {
-    if (warning && code && code.length < 6) {
-      setWarning(false);
-    }
-  }, [code]);
 
   // TODO 페이지를 나가면 timer가 멈춰야 함
   function startTimer() {
@@ -54,15 +50,23 @@ const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
     if (isCodeSame) {
       navigation.navigate('SlipDefaultProfile');
     } else {
-      setWarning(true);
+      Alert.alert(
+        textJson.SignUp.AuthCode.AlertMissTitle,
+        textJson.SignUp.AuthCode.AlertMissSubtitle,
+      );
     }
   }
 
   function reSendCode() {
     // TODO API : 인증번호 재전송
-    setTimer(LIMITED_TIME);
-    setCode('');
-    startTimer();
+    const isExpired = true;
+    if (isExpired) {
+      Alert.alert(textJson.SignUp.AuthCode.AlertExpired);
+    } else {
+      setTimer(LIMITED_TIME);
+      setCode('');
+      startTimer();
+    }
   }
 
   function channelTalk() {
@@ -77,12 +81,11 @@ const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
         code,
         email: route.params.email,
         timer: timer === 0 ? '' : convertMinAndSeconds(timer),
-        warning,
         loading,
       }}
       handle={{
         onChangeCode: setCode,
-        onSubmit: submitCode,
+        onSubmit: code.length === 6 ? submitCode : undefined,
         onReSendCode: reSendCode,
         onChannelTalk: channelTalk,
       }}

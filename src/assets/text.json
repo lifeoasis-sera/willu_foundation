@@ -13,7 +13,10 @@
     "AuthCode": {
       "Title": "인증번호 입력",
       "ReCode": "인증번호 다시 받기",
-      "NotCode": "인증번호가 오지 않나요?"
+      "NotCode": "인증번호가 오지 않나요?",
+      "AlertMissTitle": "인증번호가 맞지 않아요",
+      "AlertMissSubtitle": "다시 한 번 확인해 주세요.",
+      "AlertExpired": "10분 뒤에 다시 시도해 주세요."
     },
     "JobPlace": {
       "Title": "회사 이름을 적어 주세요",

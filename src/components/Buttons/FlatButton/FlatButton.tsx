@@ -34,6 +34,7 @@ export interface FlatButtonProps {
   >;
   textStyle?: Omit<TypographyProps, 'children' | 'color'>;
   onPress?: () => void;
+  animation?: boolean;
   children: string | ReactNode;
 }
 
@@ -49,26 +50,31 @@ const FlatButton = (props: FlatButtonProps) => {
     containerStyle,
     textStyle,
     onPress,
+    animation = true,
   } = props;
   const animated = useRef(new Animated.Value(1)).current;
 
   function handlePressIn(_: GestureResponderEvent) {
-    if (Platform.OS === 'ios') {
-      Animated.spring(animated, {
-        speed: 200,
-        useNativeDriver: true,
-        toValue: 0.95,
-      }).start();
+    if (animation) {
+      if (Platform.OS === 'ios') {
+        Animated.spring(animated, {
+          speed: 200,
+          useNativeDriver: true,
+          toValue: 0.95,
+        }).start();
+      }
     }
   }
 
   function handlePressOut(_: GestureResponderEvent) {
-    if (Platform.OS === 'ios') {
-      Animated.spring(animated, {
-        speed: 200,
-        useNativeDriver: true,
-        toValue: 1,
-      }).start();
+    if (animation) {
+      if (Platform.OS === 'ios') {
+        Animated.spring(animated, {
+          speed: 200,
+          useNativeDriver: true,
+          toValue: 1,
+        }).start();
+      }
     }
   }
 
@@ -80,7 +86,7 @@ const FlatButton = (props: FlatButtonProps) => {
         borderRadius: radius,
       }}>
       <Pressable
-        android_ripple={{color: '#D6D9DF'}}
+        android_ripple={animation ? {color: '#D6D9DF'} : undefined}
         pointerEvents={'box-only'}
         disabled={disable || loading}
         onPress={onPress}

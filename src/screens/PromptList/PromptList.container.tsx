@@ -3,6 +3,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PromptNavigationParams} from '../../navigations/types';
 import PromptListView from './PromptList.view';
 import {sectionQuestionsStorage} from './storage';
+import {IconButton, Typography} from '../../components';
+import {ColorBundle} from '../../styles/color-bundle';
 
 export interface SectionType {
   key: string;
@@ -23,9 +25,18 @@ const PromptListContainer = ({navigation}: Props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShadowVisible: false,
-      title: '질문',
-      headerBackTitle: '',
-      headerBackImageSource: require('../../assets/image/icon/ic_xmark_circle_24.png'),
+      headerBackVisible: false,
+      headerTitle: () => <Typography bold={'700'}>질문</Typography>,
+      headerLeft: () => (
+        <IconButton
+          onPress={() => navigation.navigate('Selected')}
+          icon={require('../../assets/image/icon/ic_x.png')}
+          size={20}
+          backgroundColor={ColorBundle.transparent}
+          containerStyle={{marginRight: 20}}
+          animation={false}
+        />
+      ),
     });
   });
 

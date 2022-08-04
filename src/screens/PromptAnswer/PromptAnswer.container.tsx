@@ -2,26 +2,28 @@ import React, {useLayoutEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PromptNavigationParams} from '../../navigations/types';
 import PromptAnswerView from './PromptAnswer.view';
-import {Typography} from '../../components';
+import {IconButton, Typography} from '../../components';
 import {ColorBundle} from '../../styles/color-bundle';
-import {ImageBackground, Pressable} from 'react-native';
 
-const MAX_ANSWER = 10; //140;
+const MAX_ANSWER = 140;
 type Props = NativeStackScreenProps<PromptNavigationParams, 'Answer'>;
 const PromptAnswerContainer = ({route, navigation}: Props) => {
-  const [answer, setAnswer] = useState<string>();
+  const [answer, setAnswer] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      // headerShadowVisible: false,
-      title: '답변 작성',
+      headerShadowVisible: true,
+      headerBackVisible: false,
+      headerTitle: () => <Typography bold={'700'}>답변 작성</Typography>,
       headerLeft: () => (
-        <Pressable onPress={goPromptSelected} style={{marginRight: 20}}>
-          <ImageBackground
-            source={require('../../assets/image/icon/ic_xmark_circle_24.png')}
-            style={{width: 20, height: 20}}
-          />
-        </Pressable>
+        <IconButton
+          onPress={goPromptSelected}
+          icon={require('../../assets/image/icon/ic_x.png')}
+          size={20}
+          backgroundColor={ColorBundle.transparent}
+          containerStyle={{marginRight: 20}}
+          animation={false}
+        />
       ),
       headerRight: () => (
         <Typography

@@ -42,7 +42,13 @@ const PromptSelectedContainer = ({navigation}: Props) => {
       data={{answers}}
       handle={{
         onDelete: deleteAnswer,
-        onSubmit: submitPrompt,
+        onSubmit:
+          answers.reduce(
+            (prev, curr) => (curr.answer ? (prev += 1) : prev),
+            0,
+          ) === 3
+            ? submitPrompt
+            : undefined,
         onSelectQuestion: selectQuestion,
       }}
     />

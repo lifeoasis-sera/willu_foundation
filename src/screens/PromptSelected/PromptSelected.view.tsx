@@ -1,6 +1,6 @@
 import React from 'react';
-import {IconButton, SignUpTemplate, Typography} from '../../components';
-import {ImageBackground, Pressable, View} from 'react-native';
+import {Icon, IconButton, SignUpTemplate, Typography} from '../../components';
+import {Pressable} from 'react-native';
 import {getTextJson} from '../../utils';
 import {ColorBundle} from '../../styles/color-bundle';
 import {AnswerType} from './PromptSelected.container';
@@ -12,7 +12,7 @@ interface PromptSelectedViewProps {
   handle: {
     onSelectQuestion: () => void;
     onDelete: (index: number) => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
   };
 }
 const PromptSelectedView = (props: PromptSelectedViewProps) => {
@@ -36,16 +36,15 @@ const PromptSelectedView = (props: PromptSelectedViewProps) => {
           marginTop: item.index === 0 ? 0 : 12,
         }}>
         {item.key ? (
-          <Pressable onPress={() => onDelete(item.index)}>
-            <ImageBackground
-              source={require('../../assets/image/icon/ic_xmark_circle_20.png')}
-              style={{width: 20, height: 20}}
-            />
-          </Pressable>
+          <IconButton
+            onPress={() => onDelete(item.index)}
+            icon={require('../../assets/image/icon/ic_xmark_circle_20.png')}
+            size={20}
+          />
         ) : (
-          <ImageBackground
-            source={require('../../assets/image/icon/ic_plus_circle_20.png')}
-            style={{width: 20, height: 20}}
+          <Icon
+            icon={require('../../assets/image/icon/ic_plus_circle_20.png')}
+            size={20}
           />
         )}
         <Typography
@@ -61,23 +60,23 @@ const PromptSelectedView = (props: PromptSelectedViewProps) => {
   return (
     <SignUpTemplate
       title={textJson.SignUp.Prompt.Title}
-      progressBar={{total: 7, num: 7}}
+      guid={{text: textJson.SignUp.Prompt.Info}}
+      progressBar={{total: 9, num: 9}}
+      submitButton={
+        <IconButton
+          onPress={onSubmit}
+          disable={!onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          radius={60}
+          style={{margin: 16}}
+          containerStyle={{alignSelf: 'flex-end'}}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       {answers.map(answer => (
         <RenderQuestionBox key={answer.index} answer={answer} />
       ))}
-      <IconButton
-        onPress={onSubmit}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
-      />
     </SignUpTemplate>
   );
 };

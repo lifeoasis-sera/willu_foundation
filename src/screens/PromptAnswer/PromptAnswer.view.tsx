@@ -1,20 +1,19 @@
 import React from 'react';
 import {
-  ImageBackground,
-  Pressable,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   TextInput,
   View,
 } from 'react-native';
-import {Typography} from '../../components';
-import {getTextJson} from '../../utils';
+import {IconButton, Typography} from '../../components';
 import {ColorBundle} from '../../styles/color-bundle';
 
 interface PromptAnswerViewProps {
   data: {
     question: string;
     placeholder: string;
-    answer?: string;
+    answer: string;
     maxAnswer: number;
   };
   handle: {
@@ -25,64 +24,60 @@ interface PromptAnswerViewProps {
 const PromptAnswerView = (props: PromptAnswerViewProps) => {
   const {question, placeholder, answer, maxAnswer} = props.data;
   const {onChangeAnswer, onClose} = props.handle;
-  const textJson = getTextJson();
 
   function calcNumOfAnswer() {
-    const answerLength = answer?.length || 0;
-    return maxAnswer - answerLength;
+    return maxAnswer - answer.length;
   }
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{marginHorizontal: 20}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingBottom: 18,
-            paddingTop: 40,
-            borderBottomColor: ColorBundle.divider,
-            borderBottomWidth: 1,
-          }}>
-          <Typography>{question}</Typography>
-          <Pressable onPress={onClose}>
-            <ImageBackground
-              source={require('../../assets/image/icon/ic_pen.png')}
-              style={{width: 20, height: 20}}
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={0}>
+        <View style={{flex: 1, marginHorizontal: 20, marginBottom: 24 + 18}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 18,
+              paddingTop: 40,
+            }}>
+            <Typography>{question}</Typography>
+            <IconButton
+              icon={require('../../assets/image/icon/ic_pen.png')}
+              size={20}
+              onPress={onClose}
+              backgroundColor={ColorBundle.transparent}
+              animation={false}
             />
-          </Pressable>
+          </View>
+          <TextInput
+            placeholder={placeholder}
+            value={answer}
+            onChangeText={onChangeAnswer}
+            multiline={true}
+            autoFocus={true}
+            maxLength={maxAnswer}
+            style={{
+              borderTopColor: ColorBundle.divider,
+              borderTopWidth: 1,
+              paddingTop: 16,
+              fontSize: 18,
+              fontWeight: '500',
+              lineHeight: 18 * 1.6,
+            }}
+          />
         </View>
         <Typography
+          style={{alignSelf: 'flex-end', marginRight: 20, marginBottom: 16}}
           color={
-            calcNumOfAnswer() ? ColorBundle.textDefault : ColorBundle.activate
+            calcNumOfAnswer() ? ColorBundle.textThird : ColorBundle.activate
           }>
           {'' + calcNumOfAnswer()}
         </Typography>
-        <TextInput
-          placeholder={placeholder}
-          value={answer}
-          onChangeText={onChangeAnswer}
-          multiline={true}
-          autoFocus={true}
-          maxLength={maxAnswer}
-          style={{
-            marginTop: 16,
-            fontSize: 18,
-            fontWeight: '500',
-            lineHeight: 18 * 1.6,
-          }}
-        />
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          left: 100,
-          bottom: 0,
-          height: 100,
-          width: 100,
-          backgroundColor: ColorBundle.primary,
-        }}
-      />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

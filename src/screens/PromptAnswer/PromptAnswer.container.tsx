@@ -4,11 +4,30 @@ import {PromptNavigationParams} from '../../navigations/types';
 import PromptAnswerView from './PromptAnswer.view';
 import {IconButton, Typography} from '../../components';
 import {ColorBundle} from '../../styles/color-bundle';
+import {useDispatch} from 'react-redux';
+import {addPrompt} from '../../store/user/reducer';
+import {sectionQuestionsStorage} from '../PromptList/storage';
+import {SectionType} from '../PromptList/PromptList.container';
 
 const MAX_ANSWER = 140;
 type Props = NativeStackScreenProps<PromptNavigationParams, 'Answer'>;
 const PromptAnswerContainer = ({route, navigation}: Props) => {
-  const [answer, setAnswer] = useState('');
+  const sectionQuestions: SectionType[] = sectionQuestionsStorage;
+  const dispatch = useDispatch();
+  const [answer, setAnswer] = useState(route.params.answer);
+
+  let questionTitle = '';
+  let placeholder = '';
+  sectionQuestions.forEach(section => {
+    if (section.key === route.params.sectionKey) {
+      section.questions.forEach(question => {
+        if (question.key === route.params.questionKey) {
+          questionTitle = question.question;
+          placeholder = question.placeHolder;
+        }
+      });
+    }
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -56,15 +75,23 @@ const PromptAnswerContainer = ({route, navigation}: Props) => {
 
   function submitAnswer() {
     // TODO API : 답변 저장
+    dispatch(
+      addPrompt({
+        sectionKey: route.params.sectionKey,
+        questionKey: route.params.questionKey,
+        question: questionTitle,
+        answer: answer,
+      }),
+    );
     navigation.navigate('Selected');
   }
 
   return (
     <PromptAnswerView
       data={{
-        question: route.params.question,
-        placeholder: route.params.placeholder,
-        answer: answer,
+        question: questionTitle,
+        placeholder: placeholder,
+        answer: answer || '',
         maxAnswer: MAX_ANSWER,
       }}
       handle={{

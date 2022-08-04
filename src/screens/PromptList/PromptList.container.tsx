@@ -59,20 +59,7 @@ const PromptListContainer = ({navigation}: Props) => {
   }
 
   function selectQuestion(sectionKey: string, questionKey: string) {
-    let questionTitle = '';
-    let placeholder = '';
-    sectionQuestions.forEach(section => {
-      if (section.key === sectionKey) {
-        section.questions.forEach(question => {
-          if (question.key === questionKey) {
-            questionTitle = question.question;
-            placeholder = question.placeHolder;
-          }
-        });
-      }
-    });
-
-    navigation.navigate('Answer', {question: questionTitle, placeholder});
+    navigation.navigate('Answer', {sectionKey, questionKey});
   }
 
   return (

@@ -8,24 +8,29 @@ import {AnswerType} from './PromptSelected.container';
 interface PromptSelectedViewProps {
   data: {
     answers: AnswerType[];
+    questionLength: number;
   };
   handle: {
     onSelectQuestion: () => void;
-    onDelete: (index: number) => void;
+    onDelete: (sectionKey: string, questionKey: string) => void;
+    onQuestion: (sectionKey: string, questionKey: string) => void;
     onSubmit?: () => void;
   };
 }
 const PromptSelectedView = (props: PromptSelectedViewProps) => {
-  const {answers} = props.data;
-  const {onDelete, onSelectQuestion, onSubmit} = props.handle;
+  const {answers, questionLength} = props.data;
+  const {onDelete, onQuestion, onSelectQuestion, onSubmit} = props.handle;
   const textJson = getTextJson();
 
-  const RenderQuestionBox = (props: {answer: AnswerType}) => {
-    const {answer: item} = props;
+  const RenderQuestionBox = (props: {answer?: AnswerType; index: number}) => {
+    const {answer: item, index} = props;
     return (
       <Pressable
-        onPress={onSelectQuestion}
-        pointerEvents={'box-only'}
+        onPress={
+          item
+            ? () => onQuestion(item.sectionKey, item.questionKey)
+            : onSelectQuestion
+        }
         style={{
           height: 108,
           borderRadius: 16,
@@ -33,26 +38,37 @@ const PromptSelectedView = (props: PromptSelectedViewProps) => {
           paddingVertical: 18,
           paddingHorizontal: 16,
           flexDirection: 'row',
-          marginTop: item.index === 0 ? 0 : 12,
+          marginTop: index === 0 ? 0 : 12,
         }}>
-        {item.key ? (
-          <IconButton
-            onPress={() => onDelete(item.index)}
-            icon={require('../../assets/image/icon/ic_xmark_circle_20.png')}
-            size={20}
-          />
+        {item ? (
+          <>
+            <IconButton
+              onPress={() => onDelete(item.sectionKey, item.questionKey)}
+              icon={require('../../assets/image/icon/ic_xmark_circle_20.png')}
+              size={20}
+              backgroundColor={ColorBundle.transparent}
+            />
+            <Typography
+              size={16}
+              color={ColorBundle.textInfo}
+              style={{marginLeft: 14}}>
+              {item.question}
+            </Typography>
+          </>
         ) : (
-          <Icon
-            icon={require('../../assets/image/icon/ic_plus_circle_20.png')}
-            size={20}
-          />
+          <>
+            <Icon
+              icon={require('../../assets/image/icon/ic_plus_circle_20.png')}
+              size={20}
+            />
+            <Typography
+              size={16}
+              color={ColorBundle.textInfo}
+              style={{marginLeft: 14}}>
+              {textJson.SignUp.Prompt.Input}
+            </Typography>
+          </>
         )}
-        <Typography
-          size={16}
-          color={ColorBundle.textInfo}
-          style={{marginLeft: 14}}>
-          {textJson.SignUp.Prompt.Input}
-        </Typography>
       </Pressable>
     );
   };
@@ -74,9 +90,18 @@ const PromptSelectedView = (props: PromptSelectedViewProps) => {
         />
       }
       style={{paddingHorizontal: 24}}>
-      {answers.map(answer => (
-        <RenderQuestionBox key={answer.index} answer={answer} />
-      ))}
+      {[...Array(questionLength).keys()].map((_, index) => {
+        if (answers[index]) {
+          return (
+            <RenderQuestionBox
+              key={answers[index].sectionKey + answers[index].questionKey}
+              answer={answers[index]}
+              index={index}
+            />
+          );
+        }
+        return <RenderQuestionBox key={index} index={index} />;
+      })}
     </SignUpTemplate>
   );
 };

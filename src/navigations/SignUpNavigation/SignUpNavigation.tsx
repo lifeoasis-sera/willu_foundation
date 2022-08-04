@@ -33,7 +33,7 @@ const SignUpNavigation = () => {
   return (
     <NavigationContainer theme={NavigationTheme}>
       <Stack.Navigator
-        initialRouteName={'Prompt'}
+        initialRouteName={'Onboarding'}
         screenOptions={{
           headerShadowVisible: false,
           animation: Platform.OS === 'ios' ? 'default' : 'none',

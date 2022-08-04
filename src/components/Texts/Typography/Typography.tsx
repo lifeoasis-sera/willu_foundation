@@ -31,50 +31,60 @@ const Typography = (props: TypographyProps) => {
     lineBreak,
   } = props;
 
-  const textList = children.split('\n').map(line =>
-    line
-      .split(' ')
-      .filter(word => word)
-      .map((word, index, arr) =>
-        index === arr.length - 1 ? word : `${word} `,
-      ),
-  );
-
   if (lineBreak) {
+    const textList = children.split('\n').map(line =>
+      line
+        .split(' ')
+        .filter(word => word)
+        .map((word, index, arr) =>
+          index === arr.length - 1 ? word : `${word} `,
+        ),
+    );
+
+    const linkBreakText = () => {
+      return textList.map((words, wordsIndex) => (
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}
+          key={words[0] + `${wordsIndex}`}>
+          {words.map((word, wordIndex) => (
+            <Text
+              key={wordIndex + word}
+              style={{
+                color,
+                fontSize: size,
+                fontWeight: bold,
+                lineHeight: lineHeight && size * lineHeight,
+              }}>
+              {word}
+            </Text>
+          ))}
+        </View>
+      ));
+    };
+
+    if (onPress) {
+      return (
+        <Pressable
+          onPress={onPress}
+          style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
+          {linkBreakText()}
+        </Pressable>
+      );
+    }
+
     return (
-      <Pressable
-        onPress={onPress}
-        style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
-        {textList.map((words, wordsIndex) => (
-          <View
-            style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-            }}
-            key={words[0] + `${wordsIndex}`}>
-            {words.map((word, wordIndex) => (
-              <Text
-                key={wordIndex + word}
-                style={{
-                  color,
-                  fontSize: size,
-                  fontWeight: bold,
-                  lineHeight: lineHeight && size * lineHeight,
-                }}>
-                {word}
-              </Text>
-            ))}
-          </View>
-        ))}
-      </Pressable>
+      <View style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
+        {linkBreakText()}
+      </View>
     );
   }
 
-  return (
-    <Pressable
-      onPress={onPress}
-      style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
+  const linearText = () => {
+    return (
       <Text
         style={{
           color,
@@ -89,7 +99,23 @@ const Typography = (props: TypographyProps) => {
         }}>
         {children}
       </Text>
-    </Pressable>
+    );
+  };
+
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
+        {linearText()}
+      </Pressable>
+    );
+  }
+
+  return (
+    <View style={[{alignItems: center ? 'center' : undefined}, textStyle]}>
+      {linearText()}
+    </View>
   );
 };
 

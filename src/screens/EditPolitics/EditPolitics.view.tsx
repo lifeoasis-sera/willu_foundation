@@ -21,7 +21,16 @@ const EditPoliticsView = (props: EditPoliticsViewProps) => {
     <SignUpTemplate
       icon={require('../../assets/image/icon/ic_vote.png')}
       title={textJson.SignUp.Politics.Title}
-      progressBar={{num: 2, total: 7}}
+      progressBar={{num: 5, total: 9}}
+      submitButton={
+        <IconButton
+          radius={60}
+          onPress={onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          style={{margin: 16}}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       <RadioCard
         onSelect={() => onSelect('1')}
@@ -45,18 +54,6 @@ const EditPoliticsView = (props: EditPoliticsViewProps) => {
         text={textJson.SignUp.Politics.Option['4']}
         active={selected === '4'}
         style={{marginTop: 12}}
-      />
-      <IconButton
-        onPress={onSubmit}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
       />
     </SignUpTemplate>
   );

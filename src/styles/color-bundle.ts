@@ -10,4 +10,5 @@ export enum ColorBundle {
 
   divider = '#EAEAEA',
   backGround = '#F4F4F4',
+  transparent = 'transparent',
 }

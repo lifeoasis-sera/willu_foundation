@@ -26,7 +26,7 @@ const SignUpBirthContainer = ({navigation}: Props) => {
     }
   }, [birth]);
 
-  function submit() {
+  function submitBirth() {
     // TODO API : 생년월일 정보 저장
     navigation.navigate('Residence');
     setModal(false);
@@ -38,11 +38,10 @@ const SignUpBirthContainer = ({navigation}: Props) => {
         birth,
         modalVisible: modal,
         validYear,
-        availability: validYear && birth?.length === 8,
       }}
       handle={{
         onChangeBirth: setBirth,
-        onSubmit: submit,
+        onSubmit: validYear && birth?.length === 8 ? submitBirth : undefined,
         openModal: () => setModal(true),
         closeModal: () => setModal(false),
       }}

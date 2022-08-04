@@ -1,5 +1,8 @@
 {
   "Onboarding": {
+    "Subtitle": "진지한 인연을 원하는 직장인을 위해",
+    "Next": "회사 메일로 시작하기",
+    "Terms": "가입 시 <underline>이용약관</underline> 및 <underline>개인정보 취급방침</underline>에 동의하게 됩니다."
   },
   "SignUp": {
     "AuthEmail": {
@@ -118,9 +121,15 @@
     "Selfie": {
       "Title": "사진을 2장 추가하세요",
       "Subtitle": "나중에 사진을 변경하실 수 있어요.",
-      "Drag": "순서를 바꾸려면 드래그하세요",
+      "Drag": "탭하면 사진을 올리거나 수정할 수 있어요",
       "HelpTitle": "사진을 고르기 어려우신가요?",
-      "HelpSubtitle": "더 매력적인 사진을 골라 드릴게요"
+      "HelpSubtitle": "더 매력적인 사진을 골라 드릴게요",
+      "Alert": {
+        "Title": "라이브러리 권한을 허용해 주세요",
+        "Subtitle": "프로필 사진을 등록하기 위해 라이브러리 권한이 필요해요",
+        "Setting": "권한 설정하기",
+        "Error": "설정 화면을 열수 없습니다.\n설정에서 권한을 부여해 주세요."
+      }
     },
     "Prompt": {
       "Title": "프로필 질문에 \n답변해 주세요",
@@ -176,7 +185,9 @@
     },
     "Alert": {
       "CanNotFixInfo": "이 정보는 나중에 수정할 수 없어요",
-      "NotOpenInfo": "이 정보는 프로필에 절대 공개되지 않아요"
+      "NotOpenInfo": "이 정보는 프로필에 절대 공개되지 않아요",
+      "Confirm": "확인",
+      "Cancel": "취소"
     }
   }
 }

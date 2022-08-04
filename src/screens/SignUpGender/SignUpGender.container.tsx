@@ -17,7 +17,10 @@ const SignUpGenderContainer = ({navigation}: Props) => {
   return (
     <SignUpGenderView
       data={{selectedGender}}
-      handle={{onSelectGender: setSelectGender, onSubmit: submitGender}}
+      handle={{
+        onSelectGender: setSelectGender,
+        onSubmit: selectedGender ? submitGender : undefined,
+      }}
     />
   );
 };

@@ -6,33 +6,38 @@ import {Alert} from 'react-native';
 import {getTextJson} from '../../utils';
 
 type Props = NativeStackScreenProps<SignUpNavigationParams, 'AuthCode'>;
-const LIMITED_TIME = 10; //300;
+const LIMITED_TIME = 300;
 
 const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
   const [code, setCode] = useState('');
-  const [timer, setTimer] = useState(LIMITED_TIME);
+  const [counter, setCounter] = useState(LIMITED_TIME);
   const [loading, setLoading] = useState(false);
   const textJson = getTextJson();
 
   useEffect(() => {
-    startTimer();
-  }, []);
+    const timer = startTimer();
+    return () => {
+      console.log('==== clear outside222');
+      clearInterval(timer);
+    };
+  }, [navigation]);
 
   // TODO 페이지를 나가면 timer가 멈춰야 함
   function startTimer() {
-    const id = setInterval(() => {
-      setTimer(prev => {
+    const timer = setInterval(() => {
+      setCounter(prev => {
         console.log('===== timer', prev);
         if (prev === 0) {
-          clearInterval(id);
+          console.log('==== clear inside');
+          clearInterval(timer);
           return 0;
         } else {
           return prev - 1;
         }
       });
     }, 1000);
-    return () => clearInterval(id);
-    // return id;
+
+    return timer;
   }
 
   function convertMinAndSeconds(seconds: number) {
@@ -53,6 +58,7 @@ const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
       Alert.alert(
         textJson.SignUp.AuthCode.AlertMissTitle,
         textJson.SignUp.AuthCode.AlertMissSubtitle,
+        [{text: textJson.Enum.Alert.Confirm, onPress: () => {}}],
       );
     }
   }
@@ -61,9 +67,11 @@ const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
     // TODO API : 인증번호 재전송
     const isExpired = true;
     if (isExpired) {
-      Alert.alert(textJson.SignUp.AuthCode.AlertExpired);
+      Alert.alert(textJson.SignUp.AuthCode.AlertExpired, undefined, [
+        {text: textJson.Enum.Alert.Confirm, onPress: () => {}},
+      ]);
     } else {
-      setTimer(LIMITED_TIME);
+      setCounter(LIMITED_TIME);
       setCode('');
       startTimer();
     }
@@ -80,7 +88,7 @@ const SignUpAuthCodeContainer = ({route, navigation}: Props) => {
       data={{
         code,
         email: route.params.email,
-        timer: timer === 0 ? '' : convertMinAndSeconds(timer),
+        timer: counter === 0 ? '' : convertMinAndSeconds(counter),
         loading,
       }}
       handle={{

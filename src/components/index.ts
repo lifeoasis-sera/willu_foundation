@@ -1,4 +1,4 @@
-export {Typography, DotText} from './Texts';
+export {Typography, DotText, Icon} from './Texts';
 export {FlatButton, IconButton, RadioButton} from './Buttons';
 export {SignUpTemplate, SlipTemplate} from './Template';
 export {UnderLineInput} from './Input';

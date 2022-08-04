@@ -16,7 +16,10 @@ const EditReligionContainer = ({navigation}: Props) => {
   return (
     <EditReligionView
       data={{selected}}
-      handle={{onSelect: setSelected, onSubmit: submitReligion}}
+      handle={{
+        onSelect: setSelected,
+        onSubmit: selected ? submitReligion : undefined,
+      }}
     />
   );
 };

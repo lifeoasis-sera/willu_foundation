@@ -1,7 +1,9 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, View} from 'react-native';
+import {Dimensions, SafeAreaView, View} from 'react-native';
 import {FlatButton, Typography} from '../../components';
 import {ColorBundle} from '../../styles/color-bundle';
+import {getTextJson} from '../../utils';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface OnboardingViewProps {
   handle: {
@@ -11,43 +13,71 @@ interface OnboardingViewProps {
   };
 }
 
+const {height} = Dimensions.get('window');
 const OnboardingView = (props: OnboardingViewProps) => {
-  const {onSignUp} = props.handle;
+  const {onSignUp, onPrivacy, onTerms} = props.handle;
+  const textJson = getTextJson();
+
+  const terms = textJson.Onboarding.Terms;
+  const termsList: {text: string; option: boolean}[] = terms
+    .split('<underline>')
+    .flatMap((text: string, index1: number) => {
+      const list = text.split('</underline>');
+      return list.map((ele, index2) => {
+        if (index1 > 0 && index2 === 0) {
+          return {text: ele, option: true};
+        }
+        return {text: ele, option: false};
+      });
+    });
+
+  const colors = ['rgba(255, 251, 217, 0)', '#FFFBD9', '#ECD1E0', '#CEDFFF'];
+  const locations = [0, 0.4, 0.7, 1].reverse();
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle={'light-content'} backgroundColor={'white'} />
       <View
         style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
+          // 임의 가운데 위치값
+          top: height / 2 - 70,
+          alignSelf: 'center',
+          position: 'absolute',
+          zIndex: 1,
         }}>
         <View>
           <Typography size={36}>Company Name</Typography>
           <Typography style={{marginTop: 26}}>
-            진지한 인연을 원하는 직장인을 위해
+            {textJson.Onboarding.Subtitle}
           </Typography>
         </View>
-
-        <View
-          style={{
-            left: 20,
-            right: 20,
-            position: 'absolute',
-            bottom: 24,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+      </View>
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <LinearGradient
+          colors={colors}
+          locations={locations}
+          style={{height: '100%'}}
+        />
+        <View style={{paddingHorizontal: 20, marginBottom: 24}}>
           <FlatButton display={'stretch'} onPress={onSignUp}>
-            회사 메일로 시작하기
+            {textJson.Onboarding.Next}
           </FlatButton>
-          <Typography
-            size={12}
-            lineHeight={1.6}
-            color={ColorBundle.textThird}
-            style={{marginTop: 16}}>
-            가입 시 이용약관 및 개인정보 취급방침에 동의하게 됩니다.
-          </Typography>
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            {termsList.map(({text, option}, index) => {
+              return (
+                <Typography
+                  key={text + index}
+                  onPress={option && index === 1 ? onTerms : onPrivacy}
+                  underLine={option}
+                  size={12}
+                  lineHeight={1.6}
+                  color={ColorBundle.textThird}
+                  style={{marginTop: 16}}>
+                  {text}
+                </Typography>
+              );
+            })}
+          </View>
         </View>
       </View>
     </SafeAreaView>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {IconButton, SignUpTemplate, Typography} from '../../components';
+import {Icon, IconButton, SignUpTemplate, Typography} from '../../components';
 import {getTextJson} from '../../utils';
 import {FlatList, ImageBackground, Pressable, View} from 'react-native';
 import {ColorBundle} from '../../styles/color-bundle';
@@ -8,24 +8,24 @@ import {ImageProps} from './EditSelfie.container';
 interface EditSelfieViewProps {
   data: {
     images: ImageProps[];
-    submitDisable: boolean;
   };
   handle: {
-    onSubmit: () => void;
+    onSubmit?: () => void;
     onSelectPhoto: (key: string) => void;
     onChannelTalk: () => void;
   };
 }
 
 const EditSelfieView = (props: EditSelfieViewProps) => {
-  const {images, submitDisable} = props.data;
+  const {images} = props.data;
   const {onSubmit, onSelectPhoto, onChannelTalk} = props.handle;
   const textJson = getTextJson();
 
   const renderBox = ({item, index}: {item: ImageProps; index: number}) => {
     if (item.image) {
       return (
-        <View
+        <Pressable
+          onPress={() => onSelectPhoto(item.key)}
           style={{
             flex: 1,
             aspectRatio: 1,
@@ -40,7 +40,7 @@ const EditSelfieView = (props: EditSelfieViewProps) => {
             source={{uri: item.image}}
             style={{width: '100%', height: '100%'}}
           />
-        </View>
+        </Pressable>
       );
     }
 
@@ -57,9 +57,9 @@ const EditSelfieView = (props: EditSelfieViewProps) => {
           justifyContent: 'center',
           marginLeft: index % 3 !== 0 ? 12 : 0,
         }}>
-        <ImageBackground
-          source={require('../../assets/image/icon/ic_plus_circle_24.png')}
-          style={{width: 24, height: 24}}
+        <Icon
+          icon={require('../../assets/image/icon/ic_plus_circle_24.png')}
+          size={24}
         />
       </Pressable>
     );
@@ -69,7 +69,7 @@ const EditSelfieView = (props: EditSelfieViewProps) => {
     <SignUpTemplate
       title={textJson.SignUp.Selfie.Title}
       subtitle={textJson.SignUp.Selfie.Subtitle}
-      progressBar={{num: 6, total: 7}}>
+      progressBar={{num: 8, total: 9}}>
       <View style={{paddingHorizontal: 24, flex: 1}}>
         <View>
           <FlatList
@@ -83,21 +83,19 @@ const EditSelfieView = (props: EditSelfieViewProps) => {
           color={ColorBundle.textInfo}
           size={16}
           center={true}
-          style={{marginTop: 24}}>
+          style={{marginTop: 20}}>
           {textJson.SignUp.Selfie.Drag}
         </Typography>
+      </View>
+      <View style={{margin: 16}}>
         <IconButton
           onPress={onSubmit}
-          disable={submitDisable}
+          disable={!onSubmit}
           icon={require('../../assets/image/icon/ic_arrow_right.png')}
-          size={{width: 29, height: 24}}
-          containerStyle={{
-            width: 56,
-            height: 56,
-            borderRadius: 60,
-            marginTop: 73,
-            alignSelf: 'flex-end',
-          }}
+          size={24}
+          radius={60}
+          style={{margin: 16}}
+          containerStyle={{alignSelf: 'flex-end'}}
         />
       </View>
       <Pressable
@@ -123,9 +121,9 @@ const EditSelfieView = (props: EditSelfieViewProps) => {
             borderRadius: 12,
             backgroundColor: ColorBundle.divider,
           }}>
-          <ImageBackground
-            source={require('../../assets/image/icon/ic_camera_check.png')}
-            style={{width: 32, height: 32}}
+          <Icon
+            icon={require('../../assets/image/icon/ic_camera_check.png')}
+            size={32}
           />
         </View>
         <View style={{marginLeft: 16}}>

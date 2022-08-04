@@ -8,7 +8,7 @@ interface EditReligionViewProps {
   };
   handle: {
     onSelect: (type: '1' | '2' | '3' | '4' | '5') => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
   };
 }
 
@@ -21,7 +21,17 @@ const EditReligionView = (props: EditReligionViewProps) => {
     <SignUpTemplate
       icon={require('../../assets/image/icon/ic_hand_pray.png')}
       title={textJson.SignUp.Religion.Title}
-      progressBar={{num: 5, total: 7}}
+      progressBar={{num: 6, total: 9}}
+      submitButton={
+        <IconButton
+          radius={60}
+          onPress={onSubmit}
+          disable={!onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          style={{margin: 16}}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       <RadioCard
         onSelect={() => onSelect('1')}
@@ -51,19 +61,6 @@ const EditReligionView = (props: EditReligionViewProps) => {
         text={textJson.SignUp.Religion.Option['5']}
         active={selected === '5'}
         style={{marginTop: 12}}
-      />
-      <IconButton
-        onPress={onSubmit}
-        disable={!selected}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
       />
     </SignUpTemplate>
   );

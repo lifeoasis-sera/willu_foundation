@@ -12,7 +12,6 @@ import {
   CodeField,
   Cursor,
   RenderCellOptions,
-  useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
@@ -36,7 +35,6 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
   const {onChangeCode, onChannelTalk, onReSendCode, onSubmit} = props.handle;
 
   const textJson = getTextJson();
-  const inputRef = useBlurOnFulfill({value: code, cellCount: 6});
   const [handlerProps, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
     setValue: onChangeCode,
@@ -77,21 +75,17 @@ const SignUpAuthCodeView = (props: SignUpAuthCodeViewProps) => {
       }
       submitButton={
         <IconButton
+          radius={60}
           onPress={onSubmit}
           disable={!onSubmit}
           loading={loading}
           icon={require('../../assets/image/icon/ic_arrow_right.png')}
-          size={{width: 24, height: 24}}
-          containerStyle={{
-            width: 56,
-            height: 56,
-            borderRadius: 60,
-          }}
+          size={24}
+          style={{margin: 16}}
         />
       }
       style={{paddingHorizontal: 24}}>
       <CodeField
-        ref={inputRef}
         {...handlerProps}
         value={code}
         onChangeText={text => {

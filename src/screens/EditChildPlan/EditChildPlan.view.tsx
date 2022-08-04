@@ -21,7 +21,16 @@ const EditChildPlanView = (props: EditChildPlanViewProps) => {
     <SignUpTemplate
       icon={require('../../assets/image/icon/ic_baby.png')}
       title={textJson.SignUp.ChildPlan.Title}
-      progressBar={{num: 4, total: 7}}
+      progressBar={{num: 4, total: 9}}
+      submitButton={
+        <IconButton
+          radius={60}
+          onPress={onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          style={{margin: 16}}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       <RadioCard
         onSelect={() => onSelect('1')}
@@ -39,18 +48,6 @@ const EditChildPlanView = (props: EditChildPlanViewProps) => {
         text={textJson.SignUp.ChildPlan.Option['3']}
         active={selected === '3'}
         style={{marginTop: 12}}
-      />
-      <IconButton
-        onPress={onSubmit}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
       />
     </SignUpTemplate>
   );

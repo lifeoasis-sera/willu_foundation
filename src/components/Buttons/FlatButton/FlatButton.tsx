@@ -5,6 +5,7 @@ import {
   ColorValue,
   FlexAlignType,
   GestureResponderEvent,
+  Omit,
   Platform,
   Pressable,
   ViewStyle,
@@ -14,12 +15,24 @@ import {Typography} from '../../../components';
 
 export interface FlatButtonProps {
   backgroundColor?: ColorBundle | ColorValue;
-  textColor?: ColorBundle | ColorValue;
+  textColor?: TypographyProps['color'];
+  radius?: number;
   disable?: boolean;
   loading?: boolean;
   display?: FlexAlignType;
-  containerStyle?: ViewStyle;
-  textStyle?: Omit<TypographyProps, 'children'>;
+  containerStyle?: Omit<
+    ViewStyle,
+    | 'borderRadius'
+    | 'borderTopLeftRadius'
+    | 'borderTopRightRadius'
+    | 'borderBottomLeftRadius'
+    | 'borderBottomRightRadius'
+    | 'borderBottomEndRadius'
+    | 'borderBottomStartRadius'
+    | 'borderTopEndRadius'
+    | 'borderTopStartRadius'
+  >;
+  textStyle?: Omit<TypographyProps, 'children' | 'color'>;
   onPress?: () => void;
   children: string | ReactNode;
 }
@@ -29,9 +42,10 @@ const FlatButton = (props: FlatButtonProps) => {
     children,
     backgroundColor = ColorBundle.primary,
     textColor = 'white',
+    radius = 12,
     disable,
     loading,
-    display,
+    display = 'center',
     containerStyle,
     textStyle,
     onPress,
@@ -59,12 +73,14 @@ const FlatButton = (props: FlatButtonProps) => {
   }
 
   return (
-    <Animated.View style={{transform: [{scale: animated}], overflow: 'hidden'}}>
+    <Animated.View
+      style={{
+        transform: [{scale: animated}],
+        overflow: 'hidden',
+        borderRadius: radius,
+      }}>
       <Pressable
-        android_ripple={{
-          color: '#D6D9DF',
-          borderless: true,
-        }}
+        android_ripple={{color: '#D6D9DF'}}
         pointerEvents={'box-only'}
         disabled={disable || loading}
         onPress={onPress}
@@ -72,21 +88,23 @@ const FlatButton = (props: FlatButtonProps) => {
         onPressOut={handlePressOut}
         style={[
           {
+            overflow: 'hidden',
             opacity: disable ? (Platform.OS === 'ios' ? 0.3 : 0.6) : 1,
-            backgroundColor,
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: 16,
+            alignSelf: display,
+            borderRadius: radius,
             paddingHorizontal: 24,
+            //typography size default 18이기 때문에 16
             paddingVertical: textStyle?.size ? textStyle.size - 2 : 16,
-            alignSelf: display || 'center',
+            backgroundColor,
           },
           containerStyle,
         ]}>
         {loading ? (
           <Typography color={textColor}>...</Typography>
         ) : typeof children === 'string' ? (
-          <Typography color={textColor || textStyle?.color} {...textStyle}>
+          <Typography color={textColor} {...textStyle}>
             {children}
           </Typography>
         ) : (

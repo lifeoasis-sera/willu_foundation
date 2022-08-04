@@ -1,31 +1,24 @@
 import React from 'react';
-import {Image, ImageSourcePropType, ImageStyle} from 'react-native';
 import {FlatButton} from '../index';
 import {FlatButtonProps} from '../FlatButton';
+import {Icon} from '../../Texts';
+import {IconProps} from '../../Texts/Icon';
 
-interface IconButtonProps
-  extends Omit<FlatButtonProps, 'children' | 'textStyle'> {
-  icon: ImageSourcePropType;
-  size: number | {width: number; height: number};
-  style?: ImageStyle;
-}
+type IconButtonProps = Omit<FlatButtonProps, 'children' | 'textStyle'> &
+  IconProps;
 
 const IconButton = (props: IconButtonProps) => {
-  const {icon, size: _size, style: imageStyle, ...flatButtonStyle} = props;
-
-  const size = (function () {
-    if (typeof _size === 'number') {
-      return {width: _size, height: _size};
-    }
-    return _size;
-  })();
+  const {icon, size, color, style, containerStyle, ...flatButtonStyle} = props;
 
   return (
-    <FlatButton {...flatButtonStyle}>
-      <Image
-        source={icon}
-        style={[{width: size.width, height: size.height}, imageStyle]}
-      />
+    <FlatButton
+      containerStyle={{
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        ...containerStyle,
+      }}
+      {...flatButtonStyle}>
+      <Icon icon={icon} size={size} color={color} style={style} />
     </FlatButton>
   );
 };

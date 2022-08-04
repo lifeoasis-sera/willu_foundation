@@ -32,7 +32,10 @@ const EditHeightContainer = ({navigation}: Props) => {
   return (
     <EditHeightView
       data={{height, warning}}
-      handle={{onChangeHeight: setHeight, onSubmit: submit}}
+      handle={{
+        onChangeHeight: setHeight,
+        onSubmit: height ? submit : undefined,
+      }}
     />
   );
 };

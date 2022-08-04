@@ -3,6 +3,7 @@ import OnboardingView from './Onboarding.view';
 import {useNavigation} from '@react-navigation/native';
 import {SignUpNavigationParams} from '../../navigations/types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {Linking} from 'react-native';
 
 const OnboardingContainer = () => {
   const navigation =
@@ -15,11 +16,13 @@ const OnboardingContainer = () => {
   }
 
   function linkTerms() {
-    // 이용 약관
+    // TODO Front : 이용 약관
+    Linking.openURL('https://www.maum.app/ko');
   }
 
   function linkPrivacy() {
-    // 개인정보
+    // TODO Front : 개인정보
+    Linking.openURL('https://www.maum.app/ko');
   }
 
   return (

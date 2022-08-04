@@ -50,7 +50,7 @@ const SignUpTemplate = (props: SignUpTemplateProps) => {
           </View>
         )}
 
-        <View style={{marginTop: 24, paddingHorizontal: 24}}>
+        <View style={{marginTop: percent ? 24 : 0, paddingHorizontal: 24}}>
           {!!icon && !subtitle && (
             <ImageBackground
               source={icon}

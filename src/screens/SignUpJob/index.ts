@@ -1,1 +1,1 @@
-export {default} from './SignUpJob';
+export {default} from './SignUpJob.container';

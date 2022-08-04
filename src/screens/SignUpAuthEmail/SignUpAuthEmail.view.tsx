@@ -42,6 +42,7 @@ const SignUpAuthEmailView = (props: SignUpAuthEmailViewProps) => {
         onChangeText={onChangeEmail}
         value={email}
         lineStyle={{color: guid ? ColorBundle.activate : undefined}}
+        onSubmit={onSendAuthCode}
       />
     </SignUpTemplate>
   );

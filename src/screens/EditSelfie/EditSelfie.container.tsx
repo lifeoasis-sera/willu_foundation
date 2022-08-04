@@ -3,6 +3,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SignUpNavigationParams} from '../../navigations/types';
 import EditSelfieView from './EditSelfie.view';
 import {service} from '../../business';
+import {GALLERY_EXCEPTION} from '../../business/service/GalleryService';
+import {Alert, Linking} from 'react-native';
+import {getTextJson} from '../../utils';
 
 export interface ImageProps {
   key: string;
@@ -11,6 +14,7 @@ export interface ImageProps {
 
 type Props = NativeStackScreenProps<SignUpNavigationParams, 'Selfie'>;
 const EditReligionContainer = ({navigation}: Props) => {
+  const textJson = getTextJson();
   const [data, setData] = useState<ImageProps[]>([
     {key: '0'},
     {key: '1'},
@@ -26,15 +30,35 @@ const EditReligionContainer = ({navigation}: Props) => {
   }
 
   async function getPhoto(key: string) {
-    const image = await service.gallery.getSelfie();
-    setData(prev => {
-      return prev.map(ele => {
-        if (ele.key === key) {
-          return {...ele, image: image};
-        }
-        return ele;
+    try {
+      const image = await service.gallery.getSelfie();
+      setData(prev => {
+        return prev.map(ele => {
+          if (ele.key === key) {
+            return {...ele, image: image};
+          }
+          return ele;
+        });
       });
-    });
+    } catch (e) {
+      if (e === GALLERY_EXCEPTION.BLOCKED) {
+        Alert.alert(
+          textJson.SignUp.Selfie.Alert.Title,
+          textJson.SignUp.Selfie.Alert.Subtitle,
+          [
+            {
+              text: textJson.SignUp.Selfie.Alert.Setting,
+              onPress: () => {
+                Linking.openSettings().catch(() =>
+                  Alert.alert(textJson.SignUp.Selfie.Alert.Error),
+                );
+              },
+            },
+            {text: textJson.Enum.Alert.Confirm, onPress: () => {}},
+          ],
+        );
+      }
+    }
   }
 
   function goChannelTalk() {
@@ -47,11 +71,12 @@ const EditReligionContainer = ({navigation}: Props) => {
     <EditSelfieView
       data={{
         images: data,
-        submitDisable:
-          data.reduce((prev, cur) => (cur.image ? (prev += 1) : prev), 0) < 2,
       }}
       handle={{
-        onSubmit: submitSelfie,
+        onSubmit:
+          data.reduce((prev, cur) => (cur.image ? (prev += 1) : prev), 0) >= 2
+            ? submitSelfie
+            : undefined,
         onSelectPhoto: getPhoto,
         onChannelTalk: goChannelTalk,
       }}

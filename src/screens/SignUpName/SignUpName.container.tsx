@@ -16,7 +16,10 @@ const SignUpNameContainer = ({navigation}: Props) => {
   return (
     <SignUpNameView
       data={{name, maxLength: 12}}
-      handle={{onChangeName: setName, onSubmit: submitName}}
+      handle={{
+        onChangeName: setName,
+        onSubmit: name.trim() ? submitName : undefined,
+      }}
     />
   );
 };

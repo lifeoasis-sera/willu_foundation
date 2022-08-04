@@ -3,26 +3,27 @@ import {IconButton, SignUpTemplate, UnderLineInput} from '../../components';
 import {getTextJson} from '../../utils';
 import {ColorBundle} from '../../styles/color-bundle';
 
-interface SignUpNameViewProps {
+interface SignUpJobViewProps {
   data: {
-    name: string;
+    job: string;
     maxLength: number;
   };
   handle: {
-    onChangeName: (name: string) => void;
+    onChangeJob: (job: string) => void;
     onSubmit?: () => void;
   };
 }
 
-const SignUpNameView = (props: SignUpNameViewProps) => {
-  const {name, maxLength} = props.data;
-  const {onChangeName, onSubmit} = props.handle;
+const SignUpJobView = (props: SignUpJobViewProps) => {
+  const {job, maxLength} = props.data;
+  const {onChangeJob, onSubmit} = props.handle;
   const textJson = getTextJson();
 
   return (
     <SignUpTemplate
-      title={textJson.SignUp.Name.Title}
-      progressBar={{num: 1, total: 5}}
+      title={textJson.SignUp.Job.Title}
+      subtitle={textJson.SignUp.Job.Subtitle}
+      progressBar={{num: 5, total: 5}}
       submitButton={
         <IconButton
           radius={60}
@@ -35,16 +36,16 @@ const SignUpNameView = (props: SignUpNameViewProps) => {
       }
       style={{paddingHorizontal: 24}}>
       <UnderLineInput
-        onSubmit={onSubmit}
-        placeholder={textJson.SignUp.Name.Input}
-        onChangeText={onChangeName}
-        value={name}
         maxLength={maxLength}
+        placeholder={textJson.SignUp.Job.Input}
+        onChangeText={onChangeJob}
+        value={job}
+        onSubmit={onSubmit}
         lineStyle={{width: 2}}
         suffix={
-          !!name && (
+          !!onSubmit && (
             <IconButton
-              onPress={() => onChangeName('')}
+              onPress={() => onChangeJob('')}
               icon={require('../../assets/image/icon/ic_xmark_circle_24.png')}
               size={24}
               containerStyle={{backgroundColor: ColorBundle.transparent}}
@@ -56,4 +57,4 @@ const SignUpNameView = (props: SignUpNameViewProps) => {
   );
 };
 
-export default SignUpNameView;
+export default SignUpJobView;

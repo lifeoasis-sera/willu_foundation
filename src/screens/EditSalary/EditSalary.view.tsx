@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {IconButton, SignUpTemplate, Typography} from '../../components';
 import {getTextJson} from '../../utils';
 import {Pressable, View, ViewStyle} from 'react-native';
@@ -56,7 +56,20 @@ const EditSalaryView = (props: EditSalaryViewProps) => {
       icon={require('../../assets/image/icon/ic_locker.png')}
       title={textJson.SignUp.Salary.Title}
       subtitle={textJson.SignUp.Salary.Subtitle}
-      progressBar={{num: 6, total: 7}}
+      progressBar={{num: 7, total: 9}}
+      guid={{
+        text: `${textJson.Enum.Alert.NotOpenInfo}`,
+        color: ColorBundle.activate,
+      }}
+      submitButton={
+        <IconButton
+          radius={60}
+          onPress={onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          style={{margin: 16}}
+        />
+      }
       style={{paddingHorizontal: 24}}>
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 1}}>
@@ -122,25 +135,6 @@ const EditSalaryView = (props: EditSalaryViewProps) => {
           />
         </View>
       </View>
-      <Typography
-        color={ColorBundle.activate}
-        size={16}
-        center={true}
-        style={{marginTop: 24}}>
-        {textJson.Enum.Alert.NotOpenInfo}
-      </Typography>
-      <IconButton
-        onPress={onSubmit}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
-      />
     </SignUpTemplate>
   );
 };

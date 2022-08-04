@@ -46,7 +46,9 @@ const SignUpAuthEmailContainer = ({navigation}: Props) => {
         // TODO API : 인증 번호 발송
         const isExpired = false;
         if (isExpired) {
-          Alert.alert(textJson.SignUp.AuthCode.AlertExpired);
+          Alert.alert(textJson.SignUp.AuthCode.AlertExpired, undefined, [
+            {text: textJson.Enum.Alert.Confirm, onPress: () => {}},
+          ]);
         } else {
           navigation.navigate('AuthCode', {email: email});
         }

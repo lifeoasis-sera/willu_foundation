@@ -15,7 +15,7 @@ interface EditHeightViewProps {
   };
   handle: {
     onChangeHeight: (height: string) => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
   };
 }
 
@@ -28,7 +28,25 @@ const EditHeightView = (props: EditHeightViewProps) => {
     <SignUpTemplate
       icon={require('../../assets/image/icon/ic_ruler.png')}
       title={textJson.SignUp.Height.Title}
-      progressBar={{num: 1, total: 7}}
+      progressBar={{num: 1, total: 9}}
+      submitButton={
+        <IconButton
+          radius={60}
+          onPress={onSubmit}
+          disable={!onSubmit}
+          icon={require('../../assets/image/icon/ic_arrow_right.png')}
+          size={24}
+          style={{margin: 16}}
+        />
+      }
+      guid={
+        warning
+          ? {
+              text: `${textJson.SignUp.Height.Alert}`,
+              color: ColorBundle.activate,
+            }
+          : undefined
+      }
       style={{paddingHorizontal: 24}}>
       <UnderLineInput
         keyboardType={'number-pad'}
@@ -36,33 +54,12 @@ const EditHeightView = (props: EditHeightViewProps) => {
         onChangeText={onChangeHeight}
         value={height}
         color={warning ? ColorBundle.activate : ColorBundle.textDefault}
+        lineStyle={{width: 2}}
         suffix={
           <Typography size={24} bold={'400'}>
             cm
           </Typography>
         }
-      />
-      {warning && (
-        <Typography
-          size={16}
-          color={ColorBundle.activate}
-          center={true}
-          style={{marginTop: 24}}>
-          {textJson.SignUp.Height.Alert}
-        </Typography>
-      )}
-      <IconButton
-        onPress={onSubmit}
-        icon={require('../../assets/image/icon/ic_arrow_right.png')}
-        size={{width: 29, height: 24}}
-        disable={!height}
-        containerStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 60,
-          marginTop: 73,
-          alignSelf: 'flex-end',
-        }}
       />
     </SignUpTemplate>
   );
